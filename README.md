@@ -2,9 +2,9 @@
 
 **1. After Clone or Download the repository, open the project on Microsoft Visual Studio:**
 
-Then click on **Build** menu > click on **Clean Solution** option.
+Then click on **Build** menu > select **Clean Solution** option.
 
-After that, click on **Build** menu again > click on **Rebuild Solution** option.
+After that, click on **Build** menu again > select **Rebuild Solution** option.
 
 NB: If you are having a problem with the solution, then it could be because of missing **MySql.Data.dll** file. You can download and install the dll file from https://dev.mysql.com/downloads/connector/net/. Then you need to import it as a **References** into the solution. Kindly follow the steps on this [this video](https://www.youtube.com/embed/TcovfE8IsHs?start=415&end=507) for more details.<br/><br/>
 
