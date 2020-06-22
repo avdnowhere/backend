@@ -99,7 +99,7 @@ Then, you need to setup your connection string on **WebAPI\App_Start\WebApiConfi
 
 **string conn_string = "server=localhost;port=3306;database=carsome;username=(your_username);password=(your_password);";**
 
-NB: You need to **Build** the Solution again everytime you made any changes (press **Ctrl+Shift+B**).<br/><br/>
+NB: You need to **Build** the solution again everytime you made any changes (Press **Ctrl+Shift+B**).<br/><br/>
 
 **5. The backend code located at:**
 
