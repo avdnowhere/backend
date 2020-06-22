@@ -31,7 +31,7 @@ Click **OK** > then click **OK** again.<br/><br/>
 **4. For the Database:**
 
 I use **MySQL** for this application and you need to create a new **Database** called **carsome**.
-Then run this **SQL Query** to create necessary tables:
+Then run these **SQL Queries** to create necessary tables:
 
 **CREATE TABLE IF NOT EXISTS `carsome_bookrunningtbl` (
   `BookRunningId` bigint(20) NOT NULL AUTO_INCREMENT,
