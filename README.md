@@ -24,7 +24,7 @@ Click **Advanced** button > click **Find Now** button.
 
 Select **Everyone** from the **Search results** > click **OK** > then click **OK** again.
 
-On the Permission box, tick a checkbox for **Full control** on column **Allow**.
+On the **Permissions** box, tick a checkbox for **Full control** on column **Allow**.
 
 Click **OK** > then click **OK** again.<br/><br/>
 
