@@ -97,12 +97,12 @@ Then run this **SQL Query** to create necessary tables:
 
 Then, you need to setup your connection string on **WebAPI\App_Start\WebApiConfig.cs**:
 
-**string conn_string = "server=localhost;port=3306;database=carsome;username=(your_username);password=(your_password);";**<br/><br/>
+**string conn_string = "server=localhost;port=3306;database=carsome;username=(your_username);password=(your_password);";**
+
+NB: You need to **Build** the Solution again everytime you made any changes (press **Ctrl+Shift+B**).<br/><br/>
 
 **5. The backend code located at:**
 
-### `WebAPI\Controllers\CarsomeController.cs`
-
-NB: You need to **Build** the Solution again everytime you made any changes (press **Ctrl+Shift+B**). <br/><br/>
+### `WebAPI\Controllers\CarsomeController.cs`<br/><br/>
 
 **6. You need the frontend code to better integration with the application, click [frontend-code-link](https://github.com/avdnowhere/frontend/tree/dev) for more details.**
