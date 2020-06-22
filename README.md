@@ -41,6 +41,8 @@ Then run this **SQL Query** to create necessary tables:
   CONSTRAINT `FK_carsome_bookdetailstbl_carsome_booktimetbl` FOREIGN KEY (`BookTimeId`) REFERENCES `carsome_booktimetbl` (`BookTimeId`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;**
 
+<br/>
+
 **CREATE TABLE IF NOT EXISTS `carsome_bookrunningtbl` (
   `BookRunningId` bigint(20) NOT NULL AUTO_INCREMENT,
   `Code` varchar(50) NOT NULL,
@@ -50,6 +52,11 @@ Then run this **SQL Query** to create necessary tables:
   PRIMARY KEY (`BookRunningId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;**
 
+**INSERT INTO `carsome_bookrunningtbl` (`BookRunningId`, `Code`, `RunningNo`, `CreatedDate`, `LastUpdatedDate`) VALUES
+	(1, 'BookingNo', 1, '2020-06-22 00:00:00', '2020-06-22 00:00:00');**
+
+<br/>
+
 **CREATE TABLE IF NOT EXISTS `carsome_booktimetbl` (
   `BookTimeId` bigint(20) NOT NULL AUTO_INCREMENT,
   `Code` varchar(50) NOT NULL,
@@ -58,6 +65,29 @@ Then run this **SQL Query** to create necessary tables:
   `LastUpdatedDate` datetime NOT NULL DEFAULT '1900-01-01 00:00:00',
   PRIMARY KEY (`BookTimeId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;**
+
+**INSERT INTO `carsome_booktimetbl` (`BookTimeId`, `Code`, `Name`, `CreatedDate`, `LastUpdatedDate`) VALUES
+	(1, '09.00 AM', '09.00', '2020-06-22 00:00:00', '2020-06-22 00:00:00'),
+	(2, '09.30 AM', '09.30', '2020-06-22 00:00:00', '2020-06-22 00:00:00'),
+	(3, '10.00 AM', '10.00', '2020-06-22 00:00:00', '2020-06-22 00:00:00'),
+	(4, '10.30 AM', '10.30', '2020-06-22 00:00:00', '2020-06-22 00:00:00'),
+	(5, '11.00 AM', '11.00', '2020-06-22 00:00:00', '2020-06-22 00:00:00'),
+	(6, '11.30 AM', '11.30', '2020-06-22 00:00:00', '2020-06-22 00:00:00'),
+	(7, '12.00 PM', '12.00', '2020-06-22 00:00:00', '2020-06-22 00:00:00'),
+	(8, '12.30 PM', '12.30', '2020-06-22 00:00:00', '2020-06-22 00:00:00'),
+	(9, '01.00 PM', '13.00', '2020-06-22 00:00:00', '2020-06-22 00:00:00'),
+	(10, '01.30 PM', '13.30', '2020-06-22 00:00:00', '2020-06-22 00:00:00'),
+	(11, '02.00 PM', '14.00', '2020-06-22 00:00:00', '2020-06-22 00:00:00'),
+	(12, '02.30 PM', '14.30', '2020-06-22 00:00:00', '2020-06-22 00:00:00'),
+	(13, '03.00 PM', '15.00', '2020-06-22 00:00:00', '2020-06-22 00:00:00'),
+	(14, '03.30 PM', '15.30', '2020-06-22 00:00:00', '2020-06-22 00:00:00'),
+	(15, '04.00 PM', '16.00', '2020-06-22 00:00:00', '2020-06-22 00:00:00'),
+	(16, '04.30 PM', '16.30', '2020-06-22 00:00:00', '2020-06-22 00:00:00'),
+	(17, '05.00 PM', '17.00', '2020-06-22 00:00:00', '2020-06-22 00:00:00'),
+	(18, '05.30 PM', '17.30', '2020-06-22 00:00:00', '2020-06-22 00:00:00'),
+	(19, '06.00 PM', '18.00', '2020-06-22 00:00:00', '2020-06-22 00:00:00');**
+
+<br/>
 
 Then, you need to setup your connection string on **WebAPI\App_Start\WebApiConfig.cs**:
 
