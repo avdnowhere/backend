@@ -91,7 +91,7 @@ Then run this **SQL Query** to create necessary tables:
 
 Then, you need to setup your connection string on **WebAPI\App_Start\WebApiConfig.cs**:
 
-### string conn_string = "server=localhost;port=3306;database=carsome;username=(your_username);password=(your_password);";<br/><br/>
+**string conn_string = "server=localhost;port=3306;database=carsome;username=(your_username);password=(your_password);";**<br/><br/>
 
 **4. The backend code located at:**
 
