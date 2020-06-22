@@ -1,2 +1,2 @@
-# frontend
-Inspection Slot Booking (Frontend)
+# backend
+Inspection Slot Booking (Backend)
