@@ -1,6 +1,6 @@
 ## STEP BY STEP
 
-**1. After Clone or Download the repository, open the project on Ms. Visual Studio:**
+**1. After Clone or Download the repository, open the project on Microsoft Visual Studio:**
 
 Click on **Build** menu > click **Clean Solution**.
 
@@ -12,7 +12,7 @@ After that, click on **Build** menu again > click **Rebuild Solution**.<br/><br/
 
 On **Alias**, put **CarsomeApi** and browse **Physical path** to **WebAPI** folder, then click **OK**.<br/><br/>
 
-**2. You might want to add permission to WebAPI folder:**
+**3. You might want to add permission to WebAPI folder:**
 
 Right click on **WebAPI** folder > select **Security** tab.
 
@@ -26,7 +26,7 @@ On the Permission box, tick a checkbox for **Full control** on column **Allow**.
 
 Click **OK** > then click **OK** again.<br/><br/>
 
-**3. For the Database:**
+**4. For the Database:**
 
 I use **MySQL** for this application and you need to create a new **Database** called **carsome**.
 Then run this **SQL Query** to create necessary tables:
@@ -99,8 +99,8 @@ Then, you need to setup your connection string on **WebAPI\App_Start\WebApiConfi
 
 **string conn_string = "server=localhost;port=3306;database=carsome;username=(your_username);password=(your_password);";**<br/><br/>
 
-**4. The backend code located at:**
+**5. The backend code located at:**
 
 ### `WebAPI\Controllers\CarsomeController.cs`<br/><br/>
 
-**5. You need the frontend code to better integration with the application, click [frontend-code-link](https://github.com/avdnowhere/frontend/tree/dev) for more details.**
+**6. You need the frontend code to better integration with the application, click [frontend-code-link](https://github.com/avdnowhere/frontend/tree/dev) for more details.**
