@@ -67,6 +67,6 @@ Then, you need to setup your connection string on **WebAPI\App_Start\WebApiConfi
 
 ### `WebAPI\Controllers\CarsomeController.cs`<br/><br/>
 
-**5. You need the front code to better integration with the application, click this link for more details:**
+**5. You need the frontend code to better integration with the application, click this link for more details:**
 
 ### `https://github.com/avdnowhere/frontend/tree/dev`
