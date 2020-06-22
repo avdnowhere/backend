@@ -1,6 +1,6 @@
 ## STEP BY STEP
 
-**1. After Clone or Download the project, you need to setup a new application on Internet Information Services (IIS):**
+**1. After Clone or Download the repository, you need to setup a new application on Internet Information Services (IIS):**
 
 ### `Open IIS > Sites > Right Click on Default Web Site > Click on Add Application`
 
