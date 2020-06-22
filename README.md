@@ -101,6 +101,8 @@ Then, you need to setup your connection string on **WebAPI\App_Start\WebApiConfi
 
 **5. The backend code located at:**
 
-### `WebAPI\Controllers\CarsomeController.cs`<br/><br/>
+### `WebAPI\Controllers\CarsomeController.cs`
+
+NB: You need to **Build** the Solution again everytime you made any changes (press **Ctrl+Shift+B**). <br/><br/>
 
 **6. You need the frontend code to better integration with the application, click [frontend-code-link](https://github.com/avdnowhere/frontend/tree/dev) for more details.**
