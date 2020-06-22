@@ -1,6 +1,8 @@
 ## STEP BY STEP
 
-**1. After Clone or Download the repository, you need to setup a new application on Internet Information Services (IIS):**
+**1. After Clone or Download the repository, open the project on Ms. Visual Studio and Build the Solution (Ctrl+Shift+B)**<br/><br/>
+
+**2. Then you need to setup a new application on Internet Information Services (IIS):**
 
 ### `Open IIS > Sites > Right Click on Default Web Site > Click on Add Application`
 
