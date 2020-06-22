@@ -8,7 +8,7 @@ On **Alias**, put **CarsomeApi** and browse **Physical path** to **WebAPI** fold
 
 **2. You might want to add permission to WebAPI folder:**
 
-Right click on **WebAPI** folder > select Security tab.
+Right click on **WebAPI** folder > select **Security** tab.
 
 Click **Edit** button > click **Add** button.
 
