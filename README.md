@@ -1,6 +1,10 @@
 ## STEP BY STEP
 
-**1. After Clone or Download the repository, open the project on Ms. Visual Studio and Build the Solution (Ctrl+Shift+B).**<br/><br/>
+**1. After Clone or Download the repository, open the project on Ms. Visual Studio:**
+
+Click on **Build** menu > click **Clean Solution**.
+
+After that, click on **Build** menu again > click **Rebuild Solution**.<br/><br/>
 
 **2. Then you need to setup a new application on Internet Information Services (IIS):**
 
