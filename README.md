@@ -31,24 +31,6 @@ Click **OK** > then click **OK** again.<br/><br/>
 I use **MySQL** for this application and you need to create a new **Database** called **carsome**.
 Then run this **SQL Query** to create necessary tables:
 
-**CREATE TABLE IF NOT EXISTS `carsome_bookdetailstbl` (
-  `BookDetailsId` bigint(20) NOT NULL AUTO_INCREMENT,
-  `Date` date NOT NULL DEFAULT '1900-01-01',
-  `BookTimeId` bigint(20) NOT NULL,
-  `Name` varchar(500) NOT NULL,
-  `Email` varchar(100) NOT NULL,
-  `MobileNo` varchar(50) NOT NULL,
-  `CarRegistrationNo` varchar(50) NOT NULL,
-  `BookingNo` varchar(50) NOT NULL,
-  `CreatedDate` datetime NOT NULL DEFAULT '1900-01-01 00:00:00',
-  `LastUpdatedDate` datetime NOT NULL DEFAULT '1900-01-01 00:00:00',
-  PRIMARY KEY (`BookDetailsId`),
-  KEY `FK_carsome_bookdetailstbl_carsome_booktimetbl` (`BookTimeId`),
-  CONSTRAINT `FK_carsome_bookdetailstbl_carsome_booktimetbl` FOREIGN KEY (`BookTimeId`) REFERENCES `carsome_booktimetbl` (`BookTimeId`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;**
-
-<br/>
-
 **CREATE TABLE IF NOT EXISTS `carsome_bookrunningtbl` (
   `BookRunningId` bigint(20) NOT NULL AUTO_INCREMENT,
   `Code` varchar(50) NOT NULL,
@@ -92,6 +74,24 @@ Then run this **SQL Query** to create necessary tables:
 	(17, '05.00 PM', '17.00', '2020-06-22 00:00:00', '2020-06-22 00:00:00'),
 	(18, '05.30 PM', '17.30', '2020-06-22 00:00:00', '2020-06-22 00:00:00'),
 	(19, '06.00 PM', '18.00', '2020-06-22 00:00:00', '2020-06-22 00:00:00');**
+
+<br/>
+
+**CREATE TABLE IF NOT EXISTS `carsome_bookdetailstbl` (
+  `BookDetailsId` bigint(20) NOT NULL AUTO_INCREMENT,
+  `Date` date NOT NULL DEFAULT '1900-01-01',
+  `BookTimeId` bigint(20) NOT NULL,
+  `Name` varchar(500) NOT NULL,
+  `Email` varchar(100) NOT NULL,
+  `MobileNo` varchar(50) NOT NULL,
+  `CarRegistrationNo` varchar(50) NOT NULL,
+  `BookingNo` varchar(50) NOT NULL,
+  `CreatedDate` datetime NOT NULL DEFAULT '1900-01-01 00:00:00',
+  `LastUpdatedDate` datetime NOT NULL DEFAULT '1900-01-01 00:00:00',
+  PRIMARY KEY (`BookDetailsId`),
+  KEY `FK_carsome_bookdetailstbl_carsome_booktimetbl` (`BookTimeId`),
+  CONSTRAINT `FK_carsome_bookdetailstbl_carsome_booktimetbl` FOREIGN KEY (`BookTimeId`) REFERENCES `carsome_booktimetbl` (`BookTimeId`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;**
 
 <br/>
 
