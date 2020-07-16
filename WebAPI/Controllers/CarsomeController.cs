@@ -8,62 +8,13 @@ using System.Text;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using MySql.Data.MySqlClient;
+using static WebAPI.Models.Booking;
 
 namespace WebAPI.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class CarsomeController : ApiController
     {
-        #region CARSOME CLASS
-
-        public class BookingTime
-        {
-            public List<BookingTimeData> BookingTimeData { get; set; }
-        }
-
-        public class BookingTimeData
-        {
-            public int key { get; set; }
-            public int value { get; set; }
-            public string label { get; set; }
-        }
-
-        public class CheckBookingDetails
-        {
-            public CheckBookingDetailsData BookingDetailsData { get; set; }
-        }
-
-        public class CheckBookingDetailsData
-        {
-            public int Count { get; set; }
-            public string ApiStatus { get; set; }
-            public string ApiMessage { get; set; }
-            public int Id { get; set; }
-        }
-
-        public class AddNewBookingDetails
-        {
-            public AddNewBookingDetailsData BookingDetailsData { get; set; }
-        }
-
-        public class AddNewBookingDetailsData
-        {
-            public int Count { get; set; }
-            public DateTime Date { get; set; }
-            public long BookTimeId { get; set; }
-            public string Name { get; set; }
-            public string Email { get; set; }
-            public string MobileNo { get; set; }
-            public string CarRegistrationNo { get; set; }
-            public string BookingNo { get; set; }
-            public string ApiStatus { get; set; }
-            public string ApiMessage { get; set; }
-            public int Id { get; set; }
-        }
-
-        #endregion
-
-
         #region CARSOME FUNCTION
 
         public static string Scan(string str)
@@ -255,7 +206,7 @@ namespace WebAPI.Controllers
             if (!string.IsNullOrEmpty(apikey) && apikey == "SuFH7x5V2v")
             {
                 MySqlCommand query = conn.CreateCommand();
-                query.CommandText = "SELECT COUNT(*) as Count FROM carsome_bookdetailstbl WHERE Date = '" + date.ToString("yyyy") + "-" + date.ToString("MM") + "-" + date.ToString("dd") + "' AND BookTimeId = " + booktimeid + " LIMIT 1";
+                query.CommandText = "SELECT COUNT(*) as Count FROM carsome_bookdetailstbl WHERE Date = '" + date.ToString("yyyy") + "-" + date.ToString("MM") + "-" + date.ToString("dd") + "' AND BookTimeId = " + booktimeid + " AND BookStatusId != (SELECT BookStatusId FROM carsome_bookstatustbl WHERE Name = 'Cancelled') LIMIT 1";
                 MySqlDataReader idr = query.ExecuteReader();
 
                 while (idr.Read())
@@ -270,7 +221,7 @@ namespace WebAPI.Controllers
 
                     int dayOfWeek = (int)date.DayOfWeek;
 
-                    if ((dayOfWeek < 6 && _checkBookingDetailsData.Count < 2) || (dayOfWeek >= 6 && _checkBookingDetailsData.Count < 4))
+                    if (((dayOfWeek >= 1 && dayOfWeek <= 5) && _checkBookingDetailsData.Count < 2) || (dayOfWeek == 6 && _checkBookingDetailsData.Count < 4))
                     {
                         _checkBookingDetailsData.ApiStatus = "Available";
                         _checkBookingDetailsData.ApiMessage = "The selected slot is available";
@@ -305,11 +256,11 @@ namespace WebAPI.Controllers
             }
             #endregion
 
-            MySqlConnection conn = WebApiConfig.conn();
+            MySqlConnection conn1 = WebApiConfig.conn();
 
             try
             {
-                conn.Open();
+                conn1.Open();
             }
             catch (MySqlException ex)
             {
@@ -318,63 +269,97 @@ namespace WebAPI.Controllers
 
             AddNewBookingDetailsData addNewBookingDetails = new AddNewBookingDetailsData();
 
-            if (!string.IsNullOrEmpty(apikey) && apikey == "SuFH7x5V2v")
+            if (!string.IsNullOrEmpty(apikey) && apikey == "SuFH7x5V2v" && !string.IsNullOrEmpty(item.CarRegistrationNo))
             {
-                MySqlCommand query = conn.CreateCommand();
-                query.CommandText = "SELECT COUNT(*) as Count FROM carsome_bookdetailstbl WHERE CarRegistrationNo = '" + Scan(item.CarRegistrationNo) + "' AND Date >= NOW() LIMIT 1";
-                MySqlDataReader idr = query.ExecuteReader();
+                MySqlCommand query1 = conn1.CreateCommand();
+                query1.CommandText = "SELECT COUNT(*) as Count FROM carsome_bookdetailstbl WHERE Date = '" + item.Date.ToString("yyyy") + "-" + item.Date.ToString("MM") + "-" + item.Date.ToString("dd") + "' AND BookTimeId = " + item.BookTimeId + " AND BookStatusId != (SELECT BookStatusId FROM carsome_bookstatustbl WHERE Name = 'Cancelled') LIMIT 1";
+                MySqlDataReader idr1 = query1.ExecuteReader();
 
-                while (idr.Read())
+                while (idr1.Read())
                 {
                     AddNewBookingDetailsData _addNewBookingDetailsData = new AddNewBookingDetailsData();
 
-                    _addNewBookingDetailsData.ApiStatus = "Already Exist";
-                    _addNewBookingDetailsData.ApiMessage = "The car registration no already exist";
+                    _addNewBookingDetailsData.ApiStatus = "Not Available";
+                    _addNewBookingDetailsData.ApiMessage = "The selected slot is not available";
                     _addNewBookingDetailsData.Id = 0;
 
-                    _addNewBookingDetailsData.Count = Int32.Parse(idr["Count"].ToString());
+                    _addNewBookingDetailsData.Count = Int32.Parse(idr1["Count"].ToString());
 
-                    if (_addNewBookingDetailsData.Count <= 0)
+                    int dayOfWeek = (int)item.Date.DayOfWeek;
+
+                    if (((dayOfWeek >= 1 && dayOfWeek <= 5) && _addNewBookingDetailsData.Count < 2) || (dayOfWeek == 6 && _addNewBookingDetailsData.Count < 4))
                     {
+                        MySqlConnection conn2 = WebApiConfig.conn();
+
                         try
                         {
-                            MySqlConnection newconn = WebApiConfig.conn();
-
-                            try
-                            {
-                                newconn.Open();
-                            }
-                            catch (MySqlException ex)
-                            {
-                                throw;
-                            }
-
-                            string bookingno = GenerateBookingNumber("CS", item.CarRegistrationNo + DateTime.Now.ToString("HH") + DateTime.Now.ToString("mm"));
-
-                            MySqlCommand newquery = newconn.CreateCommand();
-                            newquery.CommandText = "INSERT INTO carsome_bookdetailstbl (date, booktimeid, name, email, mobileno, carregistrationno, bookingno, createddate, lastupdateddate) " +
-                                             "VALUES('" + item.Date.ToString("yyyy") + "-" + item.Date.ToString("MM") + "-" + item.Date.ToString("dd") + "', " + item.BookTimeId + ", '" + item.Name + "', '" + item.Email + "', '" + item.MobileNo + "', '" + item.CarRegistrationNo + "', '" + bookingno + "', '" + DateTime.Now.ToString("yyyy-MM-dd H:mm:ss") + "', '" + DateTime.Now.ToString("yyyy-MM-dd H:mm:ss") + "')";
-                            newquery.ExecuteNonQuery();
-
-                            _addNewBookingDetailsData.Name = item.Name;
-                            _addNewBookingDetailsData.BookingNo = bookingno;
-                            _addNewBookingDetailsData.ApiStatus = "Success";
-                            _addNewBookingDetailsData.ApiMessage = "The booking details has been created successfully";
-                            _addNewBookingDetailsData.Id = 1;
+                            conn2.Open();
                         }
-                        catch (Exception ex)
+                        catch (MySqlException ex)
                         {
-                            _addNewBookingDetailsData.ApiStatus = "Failed";
-                            _addNewBookingDetailsData.ApiMessage = ex.Message;
-                            _addNewBookingDetailsData.Id = 0;
+                            throw;
                         }
+
+                        MySqlCommand query2 = conn2.CreateCommand();
+                        query2.CommandText = "SELECT COUNT(*) as Count FROM carsome_bookdetailstbl WHERE CarRegistrationNo = '" + Scan(item.CarRegistrationNo) + "' AND BookStatusId != (SELECT BookStatusId FROM carsome_bookstatustbl WHERE Name = 'Cancelled') AND Date >= CURDATE() LIMIT 1";
+                        MySqlDataReader idr2 = query2.ExecuteReader();
+
+                        while (idr2.Read())
+                        {
+                            _addNewBookingDetailsData.ApiStatus = "Already Exist";
+                            _addNewBookingDetailsData.ApiMessage = "The car registration no already exist";
+                            _addNewBookingDetailsData.Id = 0;
+
+                            _addNewBookingDetailsData.Count = Int32.Parse(idr2["Count"].ToString());
+
+                            if (_addNewBookingDetailsData.Count <= 0)
+                            {
+                                try
+                                {
+                                    MySqlConnection conn3 = WebApiConfig.conn();
+
+                                    try
+                                    {
+                                        conn3.Open();
+                                    }
+                                    catch (MySqlException ex)
+                                    {
+                                        throw;
+                                    }
+
+                                    string bookingno = GenerateBookingNumber("CS", item.CarRegistrationNo + DateTime.Now.ToString("HH") + DateTime.Now.ToString("mm"));
+
+                                    MySqlCommand query3 = conn3.CreateCommand();
+                                    query3.CommandText = "INSERT INTO carsome_bookdetailstbl (date, booktimeid, name, email, mobileno, carregistrationno, bookingno, bookstatusid, createddate, lastupdateddate) " +
+                                                     "VALUES('" + item.Date.ToString("yyyy") + "-" + item.Date.ToString("MM") + "-" + item.Date.ToString("dd") + "', " + item.BookTimeId + ", '" + item.Name + "', '" + item.Email + "', '" + item.MobileNo + "', '" + item.CarRegistrationNo + "', '" + bookingno + "', (SELECT BookStatusId FROM (SELECT * FROM carsome_bookstatustbl) AS t WHERE Name = 'Confirmed'), '" + DateTime.Now.ToString("yyyy-MM-dd H:mm:ss") + "', '" + DateTime.Now.ToString("yyyy-MM-dd H:mm:ss") + "')";
+                                    query3.ExecuteNonQuery();
+
+                                    _addNewBookingDetailsData.Name = item.Name;
+                                    _addNewBookingDetailsData.BookingNo = bookingno;
+                                    _addNewBookingDetailsData.ApiStatus = "Success";
+                                    _addNewBookingDetailsData.ApiMessage = "The booking details has been created successfully";
+                                    _addNewBookingDetailsData.Id = 1;
+                                }
+                                catch (Exception ex)
+                                {
+                                    _addNewBookingDetailsData.ApiStatus = "Failed";
+                                    _addNewBookingDetailsData.ApiMessage = ex.Message;
+                                    _addNewBookingDetailsData.Id = 0;
+                                }
+                            }
+
+                            addNewBookingDetails = _addNewBookingDetailsData;
+                        }
+
+                        idr2.Close();
+                        idr2.Dispose();
                     }
 
                     addNewBookingDetails = _addNewBookingDetailsData;
                 }
 
-                idr.Close();
-                idr.Dispose();
+                idr1.Close();
+                idr1.Dispose();
             }
 
             AddNewBookingDetails bookingDetails = new AddNewBookingDetails
@@ -414,7 +399,7 @@ namespace WebAPI.Controllers
             if (!string.IsNullOrEmpty(apikey) && apikey == "SuFH7x5V2v")
             {
                 MySqlCommand query = conn.CreateCommand();
-                query.CommandText = "SELECT COUNT(*) AS Count, Date, BookTimeId, Name, Email, MobileNo, CarRegistrationNo, BookingNo FROM carsome_bookdetailstbl WHERE BookingNo = '" + Scan(bookingno) + "' LIMIT 1";
+                query.CommandText = "SELECT COUNT(*) AS Count, Date, BookTimeId, Name, Email, MobileNo, CarRegistrationNo, BookingNo, (SELECT b.Name FROM carsome_bookstatustbl b WHERE b.BookStatusId = a.BookStatusId) AS BookingStatus FROM carsome_bookdetailstbl a WHERE BookingNo = '" + Scan(bookingno) + "' LIMIT 1";
                 MySqlDataReader idr = query.ExecuteReader();
 
                 while (idr.Read())
@@ -436,6 +421,7 @@ namespace WebAPI.Controllers
                         _addNewBookingDetailsData.MobileNo = idr["MobileNo"].ToString();
                         _addNewBookingDetailsData.CarRegistrationNo = idr["CarRegistrationNo"].ToString();
                         _addNewBookingDetailsData.BookingNo = idr["BookingNo"].ToString();
+                        _addNewBookingDetailsData.BookingStatus = idr["BookingStatus"].ToString();
                         _addNewBookingDetailsData.ApiStatus = "Exist";
                         _addNewBookingDetailsData.ApiMessage = "The booking no is exist";
                         _addNewBookingDetailsData.Id = 1;
@@ -451,6 +437,64 @@ namespace WebAPI.Controllers
             AddNewBookingDetails bookingDetails = new AddNewBookingDetails
             {
                 BookingDetailsData = addNewBookingDetails
+            };
+
+            return bookingDetails;
+        }
+
+        [HttpPut]
+        [Route("api/updatebookingdetails/{bookingno}")]
+        public UpdateBookingDetails PutUpdateBookingDetails(string bookingno, [FromBody]UpdateBookingDetailsData item)
+        {
+            #region ApiKey
+            string apikey = string.Empty;
+            System.Net.Http.Headers.HttpRequestHeaders headers = this.Request.Headers;
+            if (headers.Contains("apikey"))
+            {
+                apikey = headers.GetValues("apikey").First();
+            }
+            #endregion
+
+            MySqlConnection conn = WebApiConfig.conn();
+
+            try
+            {
+                conn.Open();
+            }
+            catch (MySqlException ex)
+            {
+                throw;
+            }
+
+            UpdateBookingDetailsData updateBookingDetails = new UpdateBookingDetailsData();
+
+            if (!string.IsNullOrEmpty(apikey) && apikey == "SuFH7x5V2v")
+            {
+                UpdateBookingDetailsData _updateBookingDetailsData = new UpdateBookingDetailsData();
+
+                try
+                {
+                    MySqlCommand query = conn.CreateCommand();
+                    query.CommandText = "UPDATE carsome_bookdetailstbl SET BookStatusId = (SELECT BookStatusId FROM carsome_bookstatustbl WHERE Name = '" + item.BookingStatus + "'), Date = '" + item.Date.ToString("yyyy") + "-" + item.Date.ToString("MM") + "-" + item.Date.ToString("dd") + "', BookTimeId = " + item.BookTimeId + ", LastUpdatedDate = '" + DateTime.Now.ToString("yyyy-MM-dd H:mm:ss") + "' WHERE BookingNo = '" + bookingno + "'";
+                    query.ExecuteNonQuery();
+
+                    _updateBookingDetailsData.ApiStatus = "Success";
+                    _updateBookingDetailsData.ApiMessage = "The booking details has been updated successfully";
+                    _updateBookingDetailsData.Id = 1;
+                }
+                catch (Exception ex)
+                {
+                    _updateBookingDetailsData.ApiStatus = "Failed";
+                    _updateBookingDetailsData.ApiMessage = ex.Message;
+                    _updateBookingDetailsData.Id = 0;
+                }
+
+                updateBookingDetails = _updateBookingDetailsData;
+            }
+
+            UpdateBookingDetails bookingDetails = new UpdateBookingDetails
+            {
+                BookingDetailsData = updateBookingDetails
             };
 
             return bookingDetails;
