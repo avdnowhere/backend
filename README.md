@@ -79,6 +79,22 @@ Then run these **SQL Queries** to create necessary tables:
 
 <br/>
 
+**CREATE TABLE IF NOT EXISTS `carsome_bookstatustbl` (
+  `BookStatusId` bigint(20) NOT NULL AUTO_INCREMENT,
+  `Code` varchar(50) NOT NULL,
+  `Name` varchar(100) NOT NULL,
+  `CreatedDate` datetime NOT NULL DEFAULT '1900-01-01 00:00:00',
+  `LastUpdatedDate` datetime NOT NULL DEFAULT '1900-01-01 00:00:00',
+  PRIMARY KEY (`BookStatusId`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;**
+
+**INSERT INTO `carsome_bookstatustbl` (`BookStatusId`, `Code`, `Name`, `CreatedDate`, `LastUpdatedDate`) VALUES
+	(1, 'Confirmed', 'Confirmed', '2020-06-22 00:00:00', '2020-06-22 00:00:00'),
+	(2, 'Cancelled', 'Cancelled', '2020-06-22 00:00:00', '2020-06-22 00:00:00'),
+	(3, 'Rescheduled', 'Rescheduled', '2020-06-22 00:00:00', '2020-06-22 00:00:00');**
+
+<br/>
+
 **CREATE TABLE IF NOT EXISTS `carsome_bookdetailstbl` (
   `BookDetailsId` bigint(20) NOT NULL AUTO_INCREMENT,
   `Date` date NOT NULL DEFAULT '1900-01-01',
@@ -88,12 +104,15 @@ Then run these **SQL Queries** to create necessary tables:
   `MobileNo` varchar(50) NOT NULL,
   `CarRegistrationNo` varchar(50) NOT NULL,
   `BookingNo` varchar(50) NOT NULL,
+  `BookStatusId` bigint(20) NOT NULL,
   `CreatedDate` datetime NOT NULL DEFAULT '1900-01-01 00:00:00',
   `LastUpdatedDate` datetime NOT NULL DEFAULT '1900-01-01 00:00:00',
   PRIMARY KEY (`BookDetailsId`),
   KEY `FK_carsome_bookdetailstbl_carsome_booktimetbl` (`BookTimeId`),
+  KEY `FK_carsome_bookdetailstbl_carsome_bookstatustbl` (`BookStatusId`),
+  CONSTRAINT `FK_carsome_bookdetailstbl_carsome_bookstatustbl` FOREIGN KEY (`BookStatusId`) REFERENCES `carsome_bookstatustbl` (`BookStatusId`) ON DELETE CASCADE,
   CONSTRAINT `FK_carsome_bookdetailstbl_carsome_booktimetbl` FOREIGN KEY (`BookTimeId`) REFERENCES `carsome_booktimetbl` (`BookTimeId`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;**
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8;**
 
 <br/>
 
