@@ -26,7 +26,9 @@ Select **Everyone** from the **Search results** > click **OK** > then click **OK
 
 On the **Permissions** box, tick a checkbox for **Full control** on column **Allow**.
 
-Click **OK** > then click **OK** again.<br/><br/>
+Click **OK** > then click **OK** again.
+
+NB: If there is still an issue, you can perform **Clean Solution** and **Rebuild Solution** again.<br/><br/>
 
 **4. For the Database:**
 
